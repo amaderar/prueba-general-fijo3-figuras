@@ -51,13 +51,20 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .btn-confirm{padding:10px 16px;border-radius:10px;border:none;background:var(--azul);color:#fff;font-weight:800;cursor:pointer}
 .aviso{font-size:.82rem;background:#fff8f0;border-left:4px solid var(--naranja);padding:10px 12px;border-radius:0 10px 10px 0;line-height:1.6;margin-top:12px;text-align:left}
 .badge-practica{display:inline-block;background:#e8ffe8;color:#155724;border:1px solid #a3d9a3;padding:4px 10px;border-radius:20px;font-size:.72rem;font-weight:800;margin-top:8px}
-/* NUEVO: Figuras de las preguntas */
 .fig-img{max-width:100%;height:auto;display:block;margin:12px auto;border:1px solid #ddd;border-radius:8px;background:#fff}
 .q-text .fig-img{max-width:100%}
 .opt-btn .fig-img{max-width:180px;margin:6px 0}
 .opt-btn .opt-text{flex:1;min-width:0}
 @media(max-width:600px){.nav-grid{grid-template-columns:repeat(6,1fr)}}
 </style>
+<!-- MATHJAX: Para renderizar LaTeX $...$ -->
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 <div class="hero"><div class="hero-inner"><div><div class="hero-title">Asesorías Académicas <span>Izamal</span></div><div class="hero-sub">EXANI-II Simplificado • V2 • 1 de 3 • Pensamiento Matemático • Modo Práctica</div></div></div></div>
@@ -110,8 +117,6 @@ const CSV_SEP = '|';
 const NUM_PREGUNTAS = 30;
 const TIEMPO_MIN = 45;
 
-// NUEVO: Convierte [IMG:fig7.png] o [FIG:fig7.png] en una imagen real.
-// Si la imagen no existe en GitHub, muestra un aviso en vez de un cuadro roto.
 function renderConImagenes(texto){
   let t = String(texto || '');
   t = t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -299,6 +304,9 @@ function renderQ(){
     con.appendChild(btn);
   });
   const ex = $('explanation'); ex.className = 'explanation'; ex.innerHTML = '';
+  if(window.MathJax && window.MathJax.typesetPromise){
+    window.MathJax.typesetPromise([$('q-text'), $('options')]).catch(function(e){ console.log(e); });
+  }
   updateNav();
 }
 function selectOpt(key, clickedBtn){
