@@ -38,7 +38,7 @@ input#input-nombre:focus{border-color:var(--azul)}
 <div class="hero">
   <img src="logo.png" alt="Logo Asesorías Académicas Izamal" onerror="this.style.display='none'">
   <div class="hero-title">Asesorías Académicas <span>Izamal</span></div>
-  <div class="hero-sub">EXANI-II Simplificado • V2 • Versión fija - Ana = Beto • Prueba Diagnóstica • 90 reactivos</div>
+  <div class="hero-sub">EXANI-II Simplificado • V2  • Prueba Diagnóstica • 90 reactivos</div>
 </div>
 
 <div class="wrap">
@@ -49,13 +49,13 @@ input#input-nombre:focus{border-color:var(--azul)}
   <p>Escribe tu nombre completo. Así aparecerá en tus resultados y en la hoja del maestro (Hoja V2).</p>
   <input id="input-nombre" type="text" placeholder="Ejemplo: María López García" autocomplete="name" />
   <p id="aviso-nombre" style="font-size:.78rem;color:#cc3300;margin-top:6px;display:none">⚠️ Escribe tu nombre para poder empezar.</p>
-  <div class="aviso">Tu nombre <strong>solo se usa para identificar tu resultado</strong> en la hoja del maestro V2. No se comparte con nadie más. Esta es la versión V2, no se mezcla con la V1.</div>
+  <div class="aviso">Tu nombre <strong>solo se usa para identificar tu resultado</strong> en la hoja del maestro V2. No se comparte con nadie más .</div>
 </div>
 
 <!-- COMENZAR -->
 <div class="card">
   <div class="card-title">🚀 Comenzar simulacro V2</div>
-  <p>Haz los 3 módulos en orden. Al terminar cada uno, pasas automáticamente al siguiente. <strong>No verás si tu respuesta es correcta</strong> hasta llegar a Resultados. <strong>En V2 todos tienen los mismos incisos</strong>, la versión se calcula del CSV.</p>
+  <p>Haz los 3 módulos en orden. Al terminar cada uno, pasas automáticamente al siguiente. <strong>No verás si tu respuesta es correcta</strong> hasta llegar a Resultados. <strong> V2 </strong>, la versión se calcula del CSV.</p>
   <button class="btn" onclick="iniciarSimulacro()">▶ Empezar desde Pensamiento Matemático V2</button>
   <button class="btn-ghost" onclick="verResultados()">📊 Ver mis resultados V2</button>
 </div>
@@ -65,7 +65,7 @@ input#input-nombre:focus{border-color:var(--azul)}
   <div class="card-title">📚 Módulos V2</div>
   <p>Puedes entrar a un módulo por separado, pero para ver el resultado global debes completar los 3.</p>
   <p style="font-size:.82rem;color:#0033cc;font-weight:700;text-align:center;margin-top:8px">⚠️ Si el maestro cambió el examen V2, borra tu progreso abajo y vuelve a empezar. Así te toca la versión nueva, igual que a todos.</p>
-  <p style="text-align:center;font-size:.78rem;color:#5a6080">La versión de cada módulo se muestra dentro de cada módulo. Si tu compañero tiene otra versión, uno de los dos tiene el examen viejo.</p>
+  <p style="text-align:center;font-size:.78rem;color:#5a6080">.</p>
   <div class="mod-grid">
     <div class="mod-card" onclick="irModulo('pm')">
       <div class="mod-emoji">🔢</div>
@@ -148,7 +148,7 @@ function verResultados(){
   window.location.href = 'resultados.html';
 }
 function borrarTodo(){
-  if(!confirm('¿Borrar tu progreso V2 y tu nombre y empezar de nuevo? Esto NO borra la V1.')) return;
+  if(!confirm('¿Borrar tu progreso V2 y tu nombre y empezar de nuevo? ')) return;
   try{
     localStorage.removeItem('exani_pm_v2'); localStorage.removeItem('exani_ri_v2'); localStorage.removeItem('exani_cl_v2');
     localStorage.removeItem('simulacro_Pensamiento_Matemático_v2'); localStorage.removeItem('simulacro_Redacción_Indirecta_v2'); localStorage.removeItem('simulacro_Comprensión_Lectora_v2');
