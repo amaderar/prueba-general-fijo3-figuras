@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis resultados V2 — EXANI-II Simplificado</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--azul:#0033cc;--azul-dark:#002299;--azul-light:#e8eeff;--naranja:#ff4500;--bg:#f0f4ff;--card:#fff;--txt:#1a1a2e;--sub:#5a6080}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+.hero{background:linear-gradient(135deg,var(--azul),var(--azul-dark));color:#fff;padding:18px;text-align:center}
+.hero-title{font-size:1.25rem;font-weight:800}
+.hero-title span{color:#ffd080}
+.hero-sub{font-size:.82rem;opacity:.9}
+.wrap{max-width:900px;margin:0 auto;padding:16px 14px 40px}
+.card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 6px 24px rgba(0,51,204,.13);margin-bottom:16px}
+.card-title{font-size:1rem;font-weight:800;color:var(--azul);margin-bottom:10px}
+.puntuacion{font-size:3rem;font-weight:900;text-align:center;color:var(--azul);line-height:1}
+.puntuacion small{font-size:.9rem;color:var(--sub);display:block;font-weight:700}
+.modulos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.mod{border-radius:12px;border:2px solid #d0d8f0;padding:14px;text-align:center}
+.mod-titulo{font-size:.88rem;font-weight:800}
+.mod-num{font-size:1.6rem;font-weight:900;color:var(--azul)}
+.mod-txt{font-size:.78rem;color:var(--sub);line-height:1.4}
+.barra{height:8px;background:#e8eeff;border-radius:20px;overflow:hidden;margin:8px 0 4px}
+.barra > div{height:100%;background:linear-gradient(90deg,var(--azul),#00aaff)}
+.tabla{width:100%;border-collapse:collapse;margin-top:10px}
+.tabla th,.tabla td{border:1px solid #e0e6f0;padding:10px;text-align:center;font-size:.85rem}
+.tabla th{background:#f8f9ff;color:var(--azul)}
+.tabla td.tema{text-align:left}
+.badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.badge{display:inline-block;padding:6px 12px;border-radius:20px;font-size:.75rem;font-weight:800}
+.badge-ok{background:#d4edda;color:#155724}
+.badge-warn{background:#fff3cd;color:#856404}
+.badge-info{background:#e8eeff;color:#0033cc}
+.btn{width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--azul),var(--azul-dark));color:#fff;font-size:.95rem;font-weight:800;cursor:pointer;margin-top:12px}
+.btn-ghost{width:100%;padding:12px;border-radius:12px;background:#fff;color:var(--azul);border:2px solid var(--azul);font-weight:800;cursor:pointer;margin-top:10px}
+.btn-green{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#28a745,#218838);color:#fff;font-size:.95rem;font-weight:800;cursor:pointer;margin-top:12px}
+.btn-green:disabled{opacity:.6;cursor:default}
+.aviso{font-size:.82rem;background:#fff8f0;border-left:4px solid var(--naranja);padding:10px 12px;border-radius:0 10px 10px 0;line-height:1.6;margin-top:12px}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:99}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:14px;padding:22px;max-width:420px;width:90%}
+.modal h3{margin-bottom:10px;color:var(--azul)}
+.modal p{font-size:.88rem;line-height:1.6}
+.modal-btns{display:flex;gap:10px;margin-top:16px;justify-content:flex-end}
+.btn-cancel{padding:10px 16px;border-radius:10px;border:2px solid #d0d8f0;background:#fff;font-weight:700;cursor:pointer}
+.btn-confirm{padding:10px 16px;border-radius:10px;border:none;background:var(--azul);color:#fff;font-weight:800;cursor:pointer}
+@media(max-width:600px){.modulos{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-title">Asesorías Académicas <span>Izamal</span></div>
+  <div class="hero-sub">EXANI-II Simplificado • V2 • Tus Resultados • Versión fija</div>
+</div>
+
+<div class="wrap">
+
+<!-- RESULTADO GLOBAL -->
+<div class="card">
+  <div class="card-title">🎯 Resultado Global V2</div>
+  <div class="puntuacion" id="global-cne">—<small>Índice CENEVAL (estimado)</small></div>
+  <div id="global-leyenda" style="text-align:center;font-size:.82rem;color:var(--sub);margin-top:6px">—</div>
+  <div class="badges" id="badges-container"></div>
+  <p id="version-global" style="text-align:center;font-weight:800;color:#0033cc;margin-top:10px">Versiones: —</p>
+  <p style="text-align:center;font-size:.82rem;color:var(--sub);margin-top:4px">Si tu compañero tiene otra versión, uno de los dos tiene el examen viejo. Borra tu progreso V2 en el portal y vuelve a empezar.</p>
+</div>
+
+<!-- DETALLE POR MÓDULO -->
+<div class="card">
+  <div class="card-title">📚 Detalle por Módulo V2</div>
+  <div class="modulos">
+    <div class="mod">
+      <div class="mod-titulo">🔢 Pensamiento Matemático</div>
+      <div class="mod-num" id="pm-correctas">—</div>
+      <div class="mod-txt" id="pm-detalle">—</div>
+      <div class="barra"><div id="pm-barra" style="width:0%"></div></div>
+      <div class="mod-txt" id="pm-cne">—</div>
+      <div class="mod-txt" id="pm-version" style="font-weight:800;color:#0033cc">Ver. —</div>
+    </div>
+    <div class="mod">
+      <div class="mod-titulo">✍️ Redacción Indirecta</div>
+      <div class="mod-num" id="ri-correctas">—</div>
+      <div class="mod-txt" id="ri-detalle">—</div>
+      <div class="barra"><div id="ri-barra" style="width:0%"></div></div>
+      <div class="mod-txt" id="ri-cne">—</div>
+      <div class="mod-txt" id="ri-version" style="font-weight:800;color:#0033cc">Ver. —</div>
+    </div>
+    <div class="mod">
+      <div class="mod-titulo">📖 Comprensión Lectora</div>
+      <div class="mod-num" id="cl-correctas">—</div>
+      <div class="mod-txt" id="cl-detalle">—</div>
+      <div class="barra"><div id="cl-barra" style="width:0%"></div></div>
+      <div class="mod-txt" id="cl-cne">—</div>
+      <div class="mod-txt" id="cl-version" style="font-weight:800;color:#0033cc">Ver. —</div>
+    </div>
+  </div>
+</div>
+
+<!-- TABLA DE DESEMPEÑO -->
+<div class="card">
+  <div class="card-title">📊 Desempeño por Área V2</div>
+  <table class="tabla">
+    <tr><th>Área</th><th>Aciertos</th><th>Porcentaje</th><th>Índice</th></tr>
+    <tr><td class="tema">🔢 Pensamiento Matemático</td><td id="t-pm-aciertos">—</td><td id="t-pm-pct">—</td><td id="t-pm-cne">—</td></tr>
+    <tr><td class="tema">✍️ Redacción Indirecta</td><td id="t-ri-aciertos">—</td><td id="t-ri-pct">—</td><td id="t-ri-cne">—</td></tr>
+    <tr><td class="tema">📖 Comprensión Lectora</td><td id="t-cl-aciertos">—</td><td id="t-cl-pct">—</td><td id="t-cl-cne">—</td></tr>
+  </table>
+  <p id="msj-incompleto" style="font-size:.82rem;color:#cc3300;text-align:center;margin-top:10px;display:none">⚠️ Aún no completas todos los módulos V2. El índice global es parcial.</p>
+</div>
+
+<!-- ENVIAR -->
+<div class="card">
+  <div class="card-title">📤 Enviar resultado al maestro — Hoja V2</div>
+  <p style="font-size:.88rem;line-height:1.6;color:var(--sub);text-align:center">Tu nombre es: <strong id="nombre-alumno" style="color:#0033cc">—</strong><br>Al enviar, tu resultado V2 quedará en la hoja del maestro V2, con tus versiones. Solo envía una vez.</p>
+  <button class="btn-green" id="btn-enviar" onclick="enviarResultado()">✅ Enviar mi resultado al maestro (V2)</button>
+  <p id="msg-envio" style="font-size:.82rem;text-align:center;margin-top:8px;color:var(--sub)"></p>
+  <div class="aviso">Si ya lo enviaste y quieres corregir algo, vuelve a hacer el módulo y envía de nuevo. En la hoja V2 queda tu envío más reciente con ese ID.</div>
+</div>
+
+<!-- BOTONES -->
+<div class="card">
+  <div class="card-title">🔄 Otras acciones</div>
+  <button class="btn" onclick="location.href='index.html'">← Volver al portal V2</button>
+  <button class="btn-ghost" onclick="borrarTodoV2()">🗑️ Borrar mi progreso V2 y empezar de nuevo</button>
+</div>
+
+</div>
+
+<div class="modal-bg" id="modal-bg">
+  <div class="modal"><h3>¿Borrar tu progreso V2?</h3><p>Se borrará tu resultado V2 de este celular. Tu resultado ya enviado en la hoja V2 no se borra. Esto NO borra la V1.</p>
+    <div class="modal-btns"><button class="btn-cancel" onclick="cerrarModal()">Cancelar</button><button class="btn-confirm" onclick="confirmarBorrar()">Borrar V2</button></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIG V2 - APPS SCRIPT V2, HOJA V2
+// ============================================================
+const API_URL = 'https://script.google.com/macros/s/AKfycbxg-SZE-ALuBjOgphD2vS48z_5y_E-xvmh1sOIUFjJYk15PSWwcvtpmbpF6wxN8ZDnD/exec';
+
+function getData(key){
+  try{ return JSON.parse(localStorage.getItem(key) || 'null'); }catch(e){ return null; }
+}
+function getNombre(){
+  return (localStorage.getItem('exani_nombre_v2') || localStorage.getItem('nombre') || '').trim();
+}
+
+const pm = getData('exani_pm_v2') || getData('simulacro_Pensamiento_Matemático_v2');
+const ri = getData('exani_ri_v2') || getData('simulacro_Redacción_Indirecta_v2');
+const cl = getData('exani_cl_v2') || getData('simulacro_Comprensión_Lectora_v2');
+const nombre = getNombre();
+
+document.getElementById('nombre-alumno').textContent = nombre || 'Sin nombre';
+
+const modulos = [
+  {data: pm, prefijo: 'pm', nombre: 'Pensamiento Matemático'},
+  {data: ri, prefijo: 'ri', nombre: 'Redacción Indirecta'},
+  {data: cl, prefijo: 'cl', nombre: 'Comprensión Lectora'}
+];
+
+let totalCorrectas = 0, totalPreguntas = 0;
+modulos.forEach(m => {
+  const d = m.data;
+  const correctas = d ? (d.correctos ?? d.correctas ?? 0) : 0;
+  const total = d ? (d.total ?? 0) : 0;
+  const pct = total ? Math.round(correctas/total*100) : 0;
+  const cne = d ? (d.cne ?? 0) : 0;
+  const ver = d ? (d.version || '—') : '—';
+  totalCorrectas += correctas;
+  totalPreguntas += total;
+  document.getElementById(m.prefijo + '-correctas').textContent = d ? correctas + '/' + total : '—';
+  document.getElementById(m.prefijo + '-detalle').textContent = d ? pct + '% correctas' : 'Sin datos';
+  document.getElementById(m.prefijo + '-barra').style.width = pct + '%';
+  document.getElementById(m.prefijo + '-cne').textContent = d ? 'Índice: ' + cne : '—';
+  document.getElementById(m.prefijo + '-version').textContent = 'Ver. ' + ver;
+  document.getElementById('t-' + m.prefijo + '-aciertos').textContent = d ? correctas + '/' + total : '—';
+  document.getElementById('t-' + m.prefijo + '-pct').textContent = d ? pct + '%' : '—';
+  document.getElementById('t-' + m.prefijo + '-cne').textContent = d ? cne : '—';
+});
+
+const pctGlobal = totalPreguntas ? Math.round(totalCorrectas/totalPreguntas*100) : 0;
+const cneGlobal = (function(){
+  if(!totalPreguntas) return 1000;
+  const z = (pctGlobal - 50) / 16.67;
+  return Math.min(1300, Math.max(700, Math.round(1000 + 100*z)));
+})();
+document.getElementById('global-cne').innerHTML = cneGlobal + '<small>Índice CENEVAL (estimado)</small>';
+document.getElementById('global-leyenda').textContent = totalCorrectas + ' aciertos de ' + totalPreguntas + ' reactivos (' + pctGlobal + '%) • V2';
+
+const incompleto = !pm || !ri || !cl;
+if(incompleto) document.getElementById('msj-incompleto').style.display = 'block';
+
+const verPM = pm ? (pm.version || '—') : '—';
+const verRI = ri ? (ri.version || '—') : '—';
+const verCL = cl ? (cl.version || '—') : '—';
+document.getElementById('version-global').textContent = 'Versiones: PM ' + verPM + ' • RI ' + verRI + ' • CL ' + verCL;
+
+const badges = document.getElementById('badges-container');
+let badgeHtml = '';
+if(pctGlobal >= 80) badgeHtml += '<span class="badge badge-ok">🌟 Excelente</span>';
+else if(pctGlobal >= 60) badgeHtml += '<span class="badge badge-ok">✅ Bien</span>';
+else if(pctGlobal >= 40) badgeHtml += '<span class="badge badge-warn">⚠️ Regular - sigue practicando</span>';
+else badgeHtml += '<span class="badge badge-warn">📚 Necesitas más práctica</span>';
+badgeHtml += '<span class="badge badge-info">V2 • Versión fija</span>';
+if(incompleto) badgeHtml += '<span class="badge badge-warn">⚠️ Incompleto</span>';
+badges.innerHTML = badgeHtml;
+
+function getEnvioId(){
+  let id = localStorage.getItem('exani_envio_id_v2');
+  if(!id){
+    id = 'V2_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+    localStorage.setItem('exani_envio_id_v2', id);
+  }
+  return id;
+}
+const idEnvio = getEnvioId();
+
+async function enviarResultado(){
+  const btn = document.getElementById('btn-enviar');
+  const msg = document.getElementById('msg-envio');
+  if(!nombre){
+    msg.textContent = '⚠️ No hay nombre. Vuelve al portal V2, escribe tu nombre y vuelve.';
+    msg.style.color = '#cc3300';
+    return;
+  }
+  if(!pm || !ri || !cl){
+    if(!confirm('Aún no completas los 3 módulos V2. ¿Enviar de todas formas el parcial?')) return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Enviando a Hoja V2...';
+  msg.textContent = 'Enviando...';
+  msg.style.color = '#5a6080';
+
+  const payload = {
+    idEnvio: idEnvio,
+    nombre: nombre,
+    pm_correctas: pm ? (pm.correctos ?? pm.correctas ?? 0) : 0,
+    pm_total: pm ? (pm.total ?? 0) : 0,
+    pm_pct: pm ? (pm.pct ?? 0) : 0,
+    pm_cne: pm ? (pm.cne ?? 0) : 0,
+    pm_version: verPM,
+    ri_correctas: ri ? (ri.correctos ?? ri.correctas ?? 0) : 0,
+    ri_total: ri ? (ri.total ?? 0) : 0,
+    ri_pct: ri ? (ri.pct ?? 0) : 0,
+    ri_cne: ri ? (ri.cne ?? 0) : 0,
+    ri_version: verRI,
+    cl_correctas: cl ? (cl.correctos ?? cl.correctas ?? 0) : 0,
+    cl_total: cl ? (cl.total ?? 0) : 0,
+    cl_pct: cl ? (cl.pct ?? 0) : 0,
+    cl_cne: cl ? (cl.cne ?? 0) : 0,
+    cl_version: verCL,
+    total_correctas: totalCorrectas,
+    total_preguntas: totalPreguntas,
+    pct_global: pctGlobal,
+    cne_global: cneGlobal
+  };
+
+  try{
+    const resp = await fetch(API_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+    const texto = await resp.text();
+    let res = null;
+    try{ res = JSON.parse(texto); }catch(e){}
+    if(res && res.ok){
+      msg.textContent = '✅ ¡Enviado a la Hoja V2! Ya quedó guardado con tus versiones.';
+      msg.style.color = '#155724';
+      btn.textContent = '✅ Enviado (V2)';
+    } else {
+      msg.textContent = '⚠️ Se envió pero el servidor V2 respondió: ' + texto.slice(0,120);
+      msg.style.color = '#856404';
+      btn.disabled = false;
+      btn.textContent = '✅ Enviar mi resultado al maestro (V2)';
+    }
+  }catch(e){
+    msg.textContent = '❌ Error al enviar a V2: ' + e.message + '. Revisa tu conexión y tu Apps Script V2.';
+    msg.style.color = '#cc3300';
+    btn.disabled = false;
+    btn.textContent = '✅ Enviar mi resultado al maestro (V2)';
+  }
+}
+
+function borrarTodoV2(){
+  document.getElementById('modal-bg').classList.add('open');
+}
+function cerrarModal(){ document.getElementById('modal-bg').classList.remove('open'); }
+function confirmarBorrar(){
+  cerrarModal();
+  try{
+    localStorage.removeItem('exani_pm_v2'); localStorage.removeItem('exani_ri_v2'); localStorage.removeItem('exani_cl_v2');
+    localStorage.removeItem('simulacro_Pensamiento_Matemático_v2'); localStorage.removeItem('simulacro_Redacción_Indirecta_v2'); localStorage.removeItem('simulacro_Comprensión_Lectora_v2');
+    localStorage.removeItem('exani_nombre_v2');
+    localStorage.removeItem('exani_envio_id_v2');
+  }catch(e){}
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>
